@@ -21,4 +21,5 @@ def get_loaders(train_dir, train_maskdir, val_dir, val_maskdir, batch_size, trai
     return train_loader, val_loader
 
 def check_accuracy(loader, model, device):
-    pass
+    model = model.to(device=device)
+    return None
