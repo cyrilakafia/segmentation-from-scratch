@@ -7,6 +7,7 @@ import torch.optim as optim
 from unet import UNet
 from utils import get_loaders, save_checkpoint, load_checkpoint
 import torch.nn.functional as F
+import os
 
 # hyperparameters 
 LEARNING_RATE = 1e-4
@@ -58,7 +59,9 @@ def train(loader, model, optimizer, criterion, epochs):
             'state_dict': model.state_dict(),
             'optimizer': optimizer.state_dict()
         }
-        
+        if not os.path.exist('checkpoints'):
+            os.makedirs('checkpoints')
+            
         save_checkpoint(checkpoint, filename=f'checkpoints/checkpoint_{NUM_EPOCHS}.pth.tar')
         
         epoch_loss = train_loss/len(loader)
