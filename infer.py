@@ -6,6 +6,7 @@ from PIL import Image
 import numpy as np
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
+import os
 
 
 CHECKPOINT = 'checkpoints/checkpoint_10.pth.tar'
@@ -40,6 +41,9 @@ def main():
         output = output.astype(np.uint8)
         
         image = Image.fromarray(output)
+        
+        if not os.path.exists('predictions'):
+            os.mkdir('predictions')
         
         image.save('predictions/mask.gif')
 
