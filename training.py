@@ -5,14 +5,14 @@ from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim
 from unet import UNet
-from utils import get_loaders
+from utils import get_loaders, save_checkpoint, load_checkpoint
 import torch.nn.functional as F
 
 # hyperparameters 
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 1
-NUM_EPOCHS = 2
+NUM_EPOCHS = 10
 NUM_WORKERS = 2
 IMAGE_HEIGHT = 572
 IMAGE_WIDTH = 572
@@ -32,7 +32,7 @@ def train(loader, model, optimizer, criterion, epochs):
         
         model.train()
         
-        loop = tqdm(loader, ncols=50)
+        loop = tqdm(loader, ncols=80)
     
         for i, (input, target) in enumerate(loop):
             input = input.to(device = DEVICE)
@@ -53,6 +53,14 @@ def train(loader, model, optimizer, criterion, epochs):
             train_loss += loss.item()
             
             loop.set_postfix(loss=loss.item())
+        
+        checkpoint = {
+            'state_dict': model.state_dict(),
+            'optimizer': optimizer.state_dict()
+        }
+        
+        save_checkpoint(checkpoint, filename=f'checkpoints/checkpoint_{NUM_EPOCHS}.pth.tar')
+        
         epoch_loss = train_loss/len(loader)
         
         print(f'Epoch {epoch + 1} | Training loss : {epoch_loss:.5f}')
