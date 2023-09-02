@@ -12,7 +12,7 @@ import os
 # hyperparameters 
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 1
+BATCH_SIZE = 8
 NUM_EPOCHS = 100
 NUM_WORKERS = 2
 IMAGE_HEIGHT = 572
@@ -28,9 +28,9 @@ def train(loader, model, optimizer, criterion, epochs):
     train_loss_history = []
     train_accuracy_history = []
     
+    print(f'Training starting: learning_rate={LEARNING_RATE}, batch={BATCH_SIZE}, epochs={NUM_EPOCHS}')
+    
     for epoch in range(epochs):
-        
-        print(f'Training starting: learning_rate={LEARNING_RATE}, batch={BATCH_SIZE}, epochs={NUM_EPOCHS}')
         
         train_loss = 0
         
