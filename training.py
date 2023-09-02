@@ -59,7 +59,7 @@ def train(loader, model, optimizer, criterion, epochs):
             'state_dict': model.state_dict(),
             'optimizer': optimizer.state_dict()
         }
-        if not os.path.exist('checkpoints'):
+        if not os.path.exists('checkpoints'):
             os.makedirs('checkpoints')
             
         save_checkpoint(checkpoint, filename=f'checkpoints/checkpoint_{NUM_EPOCHS}.pth.tar')
