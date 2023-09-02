@@ -29,6 +29,9 @@ def train(loader, model, optimizer, criterion, epochs):
     train_accuracy_history = []
     
     for epoch in range(epochs):
+        
+        print(f'Training starting: learning_rate={LEARNING_RATE}, batch={BATCH_SIZE}, epochs={NUM_EPOCHS}')
+        
         train_loss = 0
         
         model.train()

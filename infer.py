@@ -4,11 +4,14 @@ from utils import load_checkpoint
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
-from skimage import io
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
 
 
 CHECKPOINT = 'checkpoints/checkpoint_10.pth.tar'
 IMG_PATH = '/home/cyril/unet_segmentation_from_scratch/archive/DRIVE/training/images/21_training.tif'
+IMAGE_HEIGHT = 572
+IMAGE_WIDTH = 572
 
 def main():
     model = UNet()
@@ -17,22 +20,28 @@ def main():
     
     with torch.no_grad():
         image = np.array(Image.open(IMG_PATH).convert("RGB"))
-        image = torch.rand((2, 3, 572, 572)) 
-
+        
+        transform = A.Compose([  
+            A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH), 
+            A.Normalize(mean=[0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0],  max_pixel_value=255.0), 
+            ToTensorV2()]
+        ) 
+        
+        transformed_image = transform(image=image)
+        image = transformed_image["image"]
+        image = image.unsqueeze(0)
+        
         output = model(image)
         
-        output = output[0][0]
+        output = output[0][0].cpu().numpy() 
         
-        output = np.array(output)
-    
-        # plt.imsave('mask.gif', output)
+        output *= 255.0
+        
+        output = output.astype(np.uint8)
         
         image = Image.fromarray(output)
-        image.save('predictions/mask.gif')
         
-        io.imsave('predictins/mask_1.gif', output)
-image = np.array(Image.open('/home/cyril/unet_segmentation_from_scratch/archive/DRIVE/training/1st_manual/21_manual1.gif').convert("L"))
-print(image.shape)
+        image.save('predictions/mask.gif')
 
 if __name__ == "__main__":
     main()
