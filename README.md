@@ -25,3 +25,6 @@ As expected, the UNET model with the pretrained encoder performs significantly b
 - [ ] Add command line arguments
 - [ ] Build model from scratch with only paper and no other resources
 - [ ] Experiment with other UNET varients
+
+## Additional 
+Code was deveoped locally whilst training runs were done in a colab [notebook](https://colab.research.google.com/drive/1ryi9zquGhvP_p5DFmuPyO1mrG1d7fRFz?usp=sharing)
