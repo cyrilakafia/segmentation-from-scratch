@@ -104,11 +104,12 @@ class UNet_Pretrained(nn.Module):
         
 
 if __name__ == "__main__":
-    # image = torch.rand((1, 1, 572, 572)) 
-    # image = torch.rand((2, 3, 572, 572))  # random image
-    # model = UNet()
-    # print(model(image))
+    print("Testing base UNET")
+    image = torch.rand((2, 3, 572, 572))  # random image
+    model = UNet()
+    print(model(image))
     
+    print("Testing ResUNET")
     image = torch.rand((2, 3, 576, 576))  # random image
     model_2 = UNet_Pretrained()
     print(model_2(image))

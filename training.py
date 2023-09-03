@@ -9,10 +9,13 @@ from utils import get_loaders, save_checkpoint, load_checkpoint
 import torch.nn.functional as F
 import os
 
+import numpy as np
+from PIL import Image
+
 # hyperparameters 
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 8
+BATCH_SIZE = 1
 NUM_EPOCHS = 250
 NUM_WORKERS = 2
 PRETRAINED = True
@@ -33,7 +36,7 @@ def train(loader, model, optimizer, criterion, epochs):
     train_loss_history = []
     train_accuracy_history = []
     
-    print(f'Training starting: learning_rate={LEARNING_RATE}, batch={BATCH_SIZE}, epochs={NUM_EPOCHS}, pretrained_encode{PRETRAINED}')
+    print(f'Training starting: learning_rate={LEARNING_RATE}, batch={BATCH_SIZE}, epochs={NUM_EPOCHS}, pretrained_encoder={PRETRAINED}')
     
     for epoch in range(epochs):
         

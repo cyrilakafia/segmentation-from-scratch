@@ -11,7 +11,7 @@ def load_checkpoint(checkpoint, model):
     print("=> Loading checkpoint")
     model.load_state_dict(checkpoint["state_dict"])
     
-def load_model(model):
+def load_pretrained_model(model):
     print("=> Loading model")
     model = torch.load(model)
     return model

@@ -1,6 +1,6 @@
 import torch
 from unet import UNet
-from utils import load_checkpoint, load_model
+from utils import load_checkpoint, load_pretrained_model
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -8,10 +8,11 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 import os
 
-
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 CHECKPOINT = 'checkpoints/checkpoint_10.pth.tar'
 IMG_PATH = 'archive/DRIVE/training/images/21_training.tif'
-PRETRAINED = True
+IMG_NAME = IMG_PATH.split('/')[-1][:-3]
+PRETRAINED = False
 if PRETRAINED:
     IMAGE_HEIGHT = 576
     IMAGE_WIDTH = 576
@@ -23,13 +24,14 @@ else:
 def main():
     
     if PRETRAINED:
-        model = load_model(CHECKPOINT)
+        model = load_pretrained_model(CHECKPOINT)
         
     else:
         model = UNet()
 
         load_checkpoint(torch.load(CHECKPOINT), model)
     
+    model.to(device=DEVICE)
     model.eval()
     
     with torch.no_grad():
@@ -44,8 +46,9 @@ def main():
         transformed_image = transform(image=image)
         image = transformed_image["image"]
         image = image.unsqueeze(0)
+        image = image.to(device=DEVICE)
         
-        output = model(image)
+        output = torch.sigmoid(model(image))
         
         output = output[0][0].cpu().numpy() 
         
@@ -58,7 +61,7 @@ def main():
         if not os.path.exists('predictions'):
             os.mkdir('predictions')
         
-        image.save('predictions/mask.gif')
+        image.save(f'predictions/{IMG_NAME}gif')
 
 if __name__ == "__main__":
     main()
