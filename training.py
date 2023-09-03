@@ -12,8 +12,8 @@ import os
 # hyperparameters 
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 1
-NUM_EPOCHS = 100
+BATCH_SIZE = 8
+NUM_EPOCHS = 250
 NUM_WORKERS = 2
 PRETRAINED = True
 if PRETRAINED:
