@@ -13,7 +13,7 @@ def load_checkpoint(checkpoint, model):
     
 def load_pretrained_model(model):
     print("=> Loading model")
-    model = torch.load(model)
+    model = torch.load(model, map_location=torch.device('cpu'))
     return model
     
 def get_loaders(train_dir, train_maskdir, val_dir, val_maskdir, batch_size, train_transform, val_transform):

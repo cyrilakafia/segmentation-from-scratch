@@ -9,10 +9,10 @@ from albumentations.pytorch import ToTensorV2
 import os
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-CHECKPOINT = 'checkpoints/checkpoint_10.pth.tar'
+CHECKPOINT = 'checkpoints/last_250.pth'
 IMG_PATH = 'archive/DRIVE/training/images/21_training.tif'
 IMG_NAME = IMG_PATH.split('/')[-1][:-3]
-PRETRAINED = False
+PRETRAINED = True
 if PRETRAINED:
     IMAGE_HEIGHT = 576
     IMAGE_WIDTH = 576
@@ -29,7 +29,7 @@ def main():
     else:
         model = UNet()
 
-        load_checkpoint(torch.load(CHECKPOINT), model)
+        load_checkpoint(torch.load(CHECKPOINT, map_location=torch.device('cpu')), model)
     
     model.to(device=DEVICE)
     model.eval()
