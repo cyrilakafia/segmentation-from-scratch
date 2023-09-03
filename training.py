@@ -4,7 +4,7 @@ from albumentations.pytorch import ToTensorV2
 from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim
-from unet import UNet
+from unet import UNet, UNet_Pretrained
 from utils import get_loaders, save_checkpoint, load_checkpoint
 import torch.nn.functional as F
 import os
@@ -12,11 +12,16 @@ import os
 # hyperparameters 
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 8
+BATCH_SIZE = 1
 NUM_EPOCHS = 100
 NUM_WORKERS = 2
-IMAGE_HEIGHT = 572
-IMAGE_WIDTH = 572
+PRETRAINED = True
+if PRETRAINED:
+    IMAGE_HEIGHT = 576
+    IMAGE_WIDTH = 576
+else:
+    IMAGE_HEIGHT = 572
+    IMAGE_WIDTH = 572
 PIN_MEMORY = True
 LOAD_MODEL = False
 TRAIN_IMG_DIR = "archive/DRIVE/training/images/"
@@ -28,7 +33,7 @@ def train(loader, model, optimizer, criterion, epochs):
     train_loss_history = []
     train_accuracy_history = []
     
-    print(f'Training starting: learning_rate={LEARNING_RATE}, batch={BATCH_SIZE}, epochs={NUM_EPOCHS}')
+    print(f'Training starting: learning_rate={LEARNING_RATE}, batch={BATCH_SIZE}, epochs={NUM_EPOCHS}, pretrained_encode{PRETRAINED}')
     
     for epoch in range(epochs):
         
@@ -46,7 +51,7 @@ def train(loader, model, optimizer, criterion, epochs):
             
             outputs = model(input)
             
-            target = F.interpolate(target, size=(388, 388), mode='nearest')
+            target = F.interpolate(target, size=outputs.size()[2:], mode='nearest')
             
             loss = criterion(outputs, target)
             
@@ -76,6 +81,12 @@ def train(loader, model, optimizer, criterion, epochs):
     return model, train_loss_history, optimizer, criterion
 
 def main():
+    if PRETRAINED:
+        model = UNet_Pretrained().to(device=DEVICE)
+        
+    else:
+        model = UNet().to(device=DEVICE)
+        
     train_transforms = A.Compose(
         [
             A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
@@ -110,8 +121,6 @@ def main():
         val_transform=test_transforms,
         batch_size=BATCH_SIZE
         )
-    
-    model = UNet().to(device=DEVICE)
     
     criterion = nn.BCEWithLogitsLoss()
     

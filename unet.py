@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 
+import segmentation_models_pytorch as smp
+
 
 def double_conv(in_c, out_c):
     conv = nn.Sequential(
@@ -80,11 +82,33 @@ class UNet(nn.Module):
         return x   
         
         
+model = smp.Unet(
+encoder_name="resnet34",        
+encoder_weights="imagenet",     
+in_channels=3,                  
+classes=1,                     
+)
+    
+
+class UNet_Pretrained(nn.Module):
+    def __init__(self):
+        super(UNet_Pretrained, self).__init__()
+
+        self.model = model
         
+    def forward(self, image):
+        output = self.model(image)
+        
+        return output
+
         
 
 if __name__ == "__main__":
     # image = torch.rand((1, 1, 572, 572)) 
-    image = torch.rand((2, 1, 572, 572))  # random image
-    model = UNet()
-    print(model(image))
+    # image = torch.rand((2, 3, 572, 572))  # random image
+    # model = UNet()
+    # print(model(image))
+    
+    image = torch.rand((2, 3, 576, 576))  # random image
+    model_2 = UNet_Pretrained()
+    print(model_2(image))

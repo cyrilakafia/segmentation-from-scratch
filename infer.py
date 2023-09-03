@@ -19,6 +19,8 @@ def main():
 
     load_checkpoint(torch.load(CHECKPOINT), model)
     
+    model.eval()
+    
     with torch.no_grad():
         image = np.array(Image.open(IMG_PATH).convert("RGB"))
         
