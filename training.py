@@ -78,6 +78,8 @@ def train(loader, model, optimizer, criterion, epochs):
         
         train_loss_history.append(epoch_loss)
         
+    save_checkpoint(model, filename=f'checkpoints/last_{NUM_EPOCHS}.pth')
+        
     return model, train_loss_history, optimizer, criterion
 
 def main():

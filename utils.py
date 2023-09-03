@@ -11,6 +11,11 @@ def load_checkpoint(checkpoint, model):
     print("=> Loading checkpoint")
     model.load_state_dict(checkpoint["state_dict"])
     
+def load_model(model):
+    print("=> Loading model")
+    model = torch.load(model)
+    return model
+    
 def get_loaders(train_dir, train_maskdir, val_dir, val_maskdir, batch_size, train_transform, val_transform):
     train_ds = drivedataset(images_dir=train_dir, masks_dir=train_maskdir, transform=train_transform)
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True)

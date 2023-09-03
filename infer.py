@@ -1,6 +1,6 @@
 import torch
 from unet import UNet
-from utils import load_checkpoint
+from utils import load_checkpoint, load_model
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -10,14 +10,25 @@ import os
 
 
 CHECKPOINT = 'checkpoints/checkpoint_10.pth.tar'
-IMG_PATH = '/home/cyril/unet_segmentation_from_scratch/archive/DRIVE/training/images/21_training.tif'
-IMAGE_HEIGHT = 572
-IMAGE_WIDTH = 572
+IMG_PATH = 'archive/DRIVE/training/images/21_training.tif'
+PRETRAINED = True
+if PRETRAINED:
+    IMAGE_HEIGHT = 576
+    IMAGE_WIDTH = 576
+else:
+    IMAGE_HEIGHT = 572
+    IMAGE_WIDTH = 572
+    
 
 def main():
-    model = UNet()
+    
+    if PRETRAINED:
+        model = load_model(CHECKPOINT)
+        
+    else:
+        model = UNet()
 
-    load_checkpoint(torch.load(CHECKPOINT), model)
+        load_checkpoint(torch.load(CHECKPOINT), model)
     
     model.eval()
     
