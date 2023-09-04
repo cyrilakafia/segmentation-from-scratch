@@ -6,13 +6,23 @@ from PIL import Image
 import numpy as np
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
+
 import os
+import argparse
+
+parser = argparse.ArgumentParser(prog='Inference', description='Inferencing and save output mask')
+parser.add_argument('checkpoint', type=str, help='Path to the model checkpoint')
+parser.add_argument('image_path', type=str, help='Path to the image file')
+parser.add_argument('pretrained', type=bool, help='Are you inferencing with a finetuned pretrained model')
+
+args = parser.parse_args()
+
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-CHECKPOINT = 'checkpoints/last_250.pth'
-IMG_PATH = 'archive/DRIVE/training/images/21_training.tif'
+CHECKPOINT = args.checkpoint
+IMG_PATH = args.image_path
 IMG_NAME = IMG_PATH.split('/')[-1][:-3]
-PRETRAINED = True
+PRETRAINED = args.pretrained
 if PRETRAINED:
     IMAGE_HEIGHT = 576
     IMAGE_WIDTH = 576
@@ -62,6 +72,7 @@ def main():
             os.mkdir('predictions')
         
         image.save(f'predictions/{IMG_NAME}gif')
+        print(f'=> Output saved at predictions/{IMG_NAME}')
 
 if __name__ == "__main__":
     main()
