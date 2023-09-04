@@ -15,7 +15,7 @@ class drivedataset(Dataset):
     
     def __getitem__(self, index):
         img_path = os.path.join(self.images_dir, self.images[index])
-        mask_path = os.path.join(self.masks_dir, self.images[index].replace("_training.tif", "_manual1.gif"))
+        mask_path = os.path.join(self.masks_dir, self.images[index].replace("_training.tif", "_manual1.gif")).replace("_test.tif", "_manual1.gif")
         image = np.array(Image.open(img_path).convert("RGB"))
         # image = np.array(Image.open(img_path).convert("L"))
         mask = np.array(Image.open(mask_path).convert("L"), dtype = np.float32)

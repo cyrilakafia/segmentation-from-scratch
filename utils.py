@@ -2,6 +2,8 @@ import torch
 import torchvision
 from dataset import drivedataset
 from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
+import numpy as np
 
 def save_checkpoint(state, filename="my_checkpoint.pth.tar"):
     print("=> Saving checkpoint")
@@ -25,6 +27,26 @@ def get_loaders(train_dir, train_maskdir, val_dir, val_maskdir, batch_size, trai
     
     return train_loader, val_loader
 
-def check_accuracy(loader, model, device):
+def plot_metrics(train_loss, val_loss, epochs, experiment_name):
+    epochs = np.arange(0, epochs)
+    
+    plt.plot(epochs, train_loss)
+    plt.plot(epochs, val_loss)
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.title("Training and Validation Loss Curves")
+    
+    plt.savefig(f'predictions/{experiment_name}.jpg')
+    
+    print(f'Loss curves stored at predictions/{experiment_name}.jpg')
+    
+    return None
+
+def test(loader, model, device):
     model = model.to(device=device)
+    model.eval()
+    test_loss = 0
+    for i, (input, label) in enumerate(loader):
+        pass
+    
     return None
