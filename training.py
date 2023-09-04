@@ -11,15 +11,25 @@ import os
 
 import numpy as np
 from PIL import Image
+import argparse
+
+
+parser = argparse.ArgumentParser(prog='Training and Validation', description='Training and Validation a segmentation model')
+parser.add_argument('epochs', type=int, help='Number of epochs')
+parser.add_argument('batch', type=int, help='Batch size')
+parser.add_argument('experiment', type=str, help='Name of traning experiment')
+parser.add_argument('pretrained', type=bool, help='Use the pretrained model')
+
+args = parser.parse_args()
 
 # hyperparameters 
-EXPERIMENT_NAME = 'local'
+EXPERIMENT_NAME = args.experiment
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 1
-NUM_EPOCHS = 2
+BATCH_SIZE = args.batch
+NUM_EPOCHS = args.epochs
 NUM_WORKERS = 2
-PRETRAINED = True
+PRETRAINED = args.pretrained
 if PRETRAINED:
     IMAGE_HEIGHT = 576
     IMAGE_WIDTH = 576
@@ -32,6 +42,7 @@ TRAIN_IMG_DIR = "archive/DRIVE/training/images/"
 TRAIM_MASK_DIR = "archive/DRIVE/training/1st_manual"
 VAL_IMG_DIR = "archive/DRIVE/test/images"
 VAL_MASK_DIR = "archive/DRIVE/test/1st_manual"
+
 
 def train(train_loader, val_loader, model, optimizer, criterion, epochs):
     train_loss_history = []
