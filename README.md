@@ -18,11 +18,9 @@ I train and evaluate the model on the DRIVE 2004 dataset and visualize its predi
 Using the segmentation_models.pytorch [library](https://github.com/qubvel/segmentation_models.pytorch/tree/master), I train a UNET with a pretrained encoder (resnet) on the same DRIVE 2004 dataset.
 
 ## Results
-As expected, the UNET model with the pretrained encoder performs significantly better than the base UNET model. This is evident in the training logs and metrics shown below. Furthermore, the models are used to perform inference on some unseen test data and their predictions (masks) are visualized. The 'ResUNET' performes much better than the base UNET.
+As expected, the UNET model with the pretrained encoder performs significantly better than the base UNET model. This is evident in the training logs and metrics shown below. Furthermore, the models are used to perform inference on some unseen test data and their predictions (masks) are visualized. The 'ResUNET' performes much better than the base UNET
 
 ## TODO
-- [ ] Add testing loop
-- [ ] Add command line arguments
 - [ ] Build model from scratch with only paper and no other resources
 - [ ] Experiment with other UNET varients
 

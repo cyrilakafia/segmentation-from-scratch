@@ -36,9 +36,9 @@ def plot_metrics(train_loss, val_loss, epochs, experiment_name):
     plt.ylabel('Loss')
     plt.title("Training and Validation Loss Curves")
     
-    plt.savefig(f'predictions/{experiment_name}.jpg')
+    plt.savefig(f'checkpoints/{experiment_name}/losses.jpg')
     
-    print(f'Loss curves stored at predictions/{experiment_name}.jpg')
+    print(f'Loss curves stored at checkpoints/{experiment_name}/losses.jpg')
     
     return None
 

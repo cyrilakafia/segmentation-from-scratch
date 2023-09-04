@@ -46,7 +46,7 @@ def train(train_loader, val_loader, model, optimizer, criterion, epochs):
         
         model.train()
         
-        loop = tqdm(train_loader, ncols=80)
+        loop = tqdm(train_loader, ncols=80, desc='Training')
     
         for i, (input, target) in enumerate(loop):
             input = input.to(device = DEVICE)
@@ -71,7 +71,7 @@ def train(train_loader, val_loader, model, optimizer, criterion, epochs):
         model.eval()
         
         with torch.no_grad():
-            val_loop = tqdm(val_loader, ncols=80)
+            val_loop = tqdm(val_loader, ncols=80, desc='Validation')
             
             for i, (input, target) in enumerate(val_loop):
                 input = input.to(device = DEVICE)
@@ -92,10 +92,10 @@ def train(train_loader, val_loader, model, optimizer, criterion, epochs):
             'state_dict': model.state_dict(),
             'optimizer': optimizer.state_dict()
         }
-        if not os.path.exists('checkpoints'):
-            os.makedirs('checkpoints')
+        if not os.path.exists(f'checkpoints/{EXPERIMENT_NAME}'):
+            os.makedirs(f'checkpoints/{EXPERIMENT_NAME}')
             
-        save_checkpoint(checkpoint, filename=f'checkpoints/checkpoint_{NUM_EPOCHS}.pth.tar')
+        save_checkpoint(checkpoint, filename=f'checkpoints/{EXPERIMENT_NAME}/weights_{NUM_EPOCHS}_epoch.pth.tar')
         
         epoch_loss = train_loss/len(train_loader)
         val_epoch_loss = val_loss/len(val_loader)
@@ -105,7 +105,7 @@ def train(train_loader, val_loader, model, optimizer, criterion, epochs):
         train_loss_history.append(epoch_loss)
         val_loss_history.append(val_epoch_loss)
         
-    save_checkpoint(model, filename=f'checkpoints/last_{NUM_EPOCHS}.pth')
+    save_checkpoint(model, filename=f'checkpoints/{EXPERIMENT_NAME}/last_{NUM_EPOCHS}_epoch.pth')
         
     return model, train_loss_history, val_loss_history, optimizer, criterion
 
