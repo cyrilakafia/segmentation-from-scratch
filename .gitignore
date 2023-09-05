@@ -1,3 +1,5 @@
 media/*.mp4
 checkpoints/*/*.pth
 checkpoints/*/*.pth.tar
+checkpoints/*.pth.tar
+checkpoints/*.pth
