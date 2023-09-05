@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(prog='Training and Validation', description='Tr
 parser.add_argument('-epochs', type=int, help='Number of epochs')
 parser.add_argument('-batch', type=int, help='Batch size')
 parser.add_argument('-experiment', type=str, help='Name of traning experiment')
-parser.add_argument('-pretrained', type=bool, help='Use the pretrained model')
+parser.add_argument('-pretrained', action='store_true', help='Use the pretrained model')
 
 args = parser.parse_args()
 
@@ -127,6 +127,7 @@ def main():
     else:
         model = UNet().to(device=DEVICE)
         
+    print(PRETRAINED)
     train_transforms = A.Compose(
         [
             A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
