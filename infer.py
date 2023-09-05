@@ -11,9 +11,9 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser(prog='Inference', description='Inferencing and save output mask')
-parser.add_argument('checkpoint', type=str, help='Path to the model checkpoint')
-parser.add_argument('image_path', type=str, help='Path to the image file')
-parser.add_argument('pretrained', action='store_true', help='Are you inferencing with a finetuned pretrained model')
+parser.add_argument('-checkpoint', type=str, help='Path to the model checkpoint')
+parser.add_argument('-image_path', type=str, help='Path to the image file')
+parser.add_argument('-pretrained', action='store_true', help='Are you inferencing with a finetuned pretrained model')
 
 args = parser.parse_args()
 
