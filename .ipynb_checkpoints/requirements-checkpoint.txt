@@ -1,0 +1,6 @@
+torch
+torchvision
+albumentations
+matplotlib
+segmentation_models_pytorch
+tqdm
