@@ -15,10 +15,10 @@ import argparse
 
 
 parser = argparse.ArgumentParser(prog='Training and Validation', description='Training and Validation a segmentation model')
-parser.add_argument('epochs', type=int, help='Number of epochs')
-parser.add_argument('batch', type=int, help='Batch size')
-parser.add_argument('experiment', type=str, help='Name of traning experiment')
-parser.add_argument('pretrained', type=bool, help='Use the pretrained model')
+parser.add_argument('-epochs', type=int, help='Number of epochs')
+parser.add_argument('-batch', type=int, help='Batch size')
+parser.add_argument('-experiment', type=str, help='Name of traning experiment')
+parser.add_argument('-pretrained', type=bool, help='Use the pretrained model')
 
 args = parser.parse_args()
 
